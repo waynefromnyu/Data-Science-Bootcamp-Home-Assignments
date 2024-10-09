@@ -1,0 +1,24 @@
+#Ans1:
+def count_vowels(word):
+    count = 0
+    vowels = 'aeiouAEIOU'
+    for i in word:
+        if i in vowels:
+            count += 1
+    return count 
+
+#Ans2:
+animals=['tiger', 'elephant', 'monkey', 'zebra', 'panther']
+
+for i in animals:
+    print(i.upper())
+
+#Ans3:
+for i in range(1,21):
+    if i % 2 == 0:
+        print(f"{i} is even")
+    else:
+        print(f"{i} is odd")
+#Ans4:
+def sum_of_integers(a, b):
+    return a+b

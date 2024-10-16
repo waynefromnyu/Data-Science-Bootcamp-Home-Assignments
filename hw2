@@ -1,0 +1,35 @@
+import numpy as np
+
+
+A = np.array([[1, 2, 3], [1, 2, 3]])
+B = np.array([[2, 3, 4], [2, 3, 4]])
+
+#Ans1
+vertical_stack = np.vstack((A, B))
+horizontal_stack = np.hstack((A, B))
+
+#Ans2
+common_elements = np.intersect1d(A, B)
+
+#Ans3
+result = np.where((A > 5) & (A < 10))
+
+#Ans4
+
+url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
+iris_2d = np.genfromtxt(url, delimiter=',', dtype='float', usecols=[0, 1, 2, 3])
+
+filtered_iris = iris_2d[(iris_2d[:, 2] > 1.5) & (iris_2d[:, 0] < 5.0)]
+
+#Ans5
+
+df = pd.read_csv('https://raw.githubusercontent.com/selva86/datasets/master/Cars93_miss.csv')
+filtered_rows = df.loc[::20, ['Manufacturer', 'Model', 'Type']]
+
+#Ans6
+df['Min.Price'].fillna(df['Min.Price'].mean(), inplace=True)
+df['Max.Price'].fillna(df['Max.Price'].mean(), inplace=True)
+
+#Ans7
+df = pd.DataFrame(np.random.randint(10, 40, 60).reshape(-1, 4))
+filtered_rows = df[df.sum(axis=1) > 100]

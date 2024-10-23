@@ -1,0 +1,60 @@
+Ans1:
+import pandas as pd
+import matplotlib.pyplot as plt
+
+
+url = "https://data.cityofnewyork.us/api/views/6fi9-q3ta/rows.csv?accessType=DOWNLOAD"
+df = pd.read_csv(url)
+df['Date'] = pd.to_datetime(df['Date'])
+df['Day_of_Week'] = df['Date'].dt.dayofweek
+weekday_df = df[df['Day_of_Week'].isin([0, 1, 2, 3, 4])]
+weekday_grouped = weekday_df.groupby('Day_of_Week')['Pedestrians'].sum()
+
+
+plt.figure(figsize=(10, 6))
+plt.plot(weekday_grouped.index, weekday_grouped.values, marker='o')
+plt.xticks(ticks=range(5), labels=['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'])
+plt.title('Pedestrian Counts for Each Weekday')
+plt.xlabel('Day of the Week')
+plt.ylabel('Pedestrian Counts')
+plt.grid(True)
+plt.show()
+
+
+Ans2:
+df['Year'] = df['Date'].dt.year
+df_2019 = df[df['Year'] == 2019]
+
+
+df_2019_encoded = pd.get_dummies(df_2019, columns=['Weather Summary'])
+correlation_matrix = df_2019_encoded.corr()
+
+
+pedestrian_weather_corr = correlation_matrix.loc['Pedestrians', df_2019_encoded.columns.str.startswith('Weather Summary')]
+print("Correlation between Pedestrian Counts and Weather Conditions:")
+print(pedestrian_weather_corr)
+
+
+Ans3:
+
+def categorize_time_of_day(hour):
+    if 5 <= hour < 12:
+        return 'Morning'
+    elif 12 <= hour < 17:
+        return 'Afternoon'
+    elif 17 <= hour < 21:
+        return 'Evening'
+    else:
+        return 'Night'
+
+df['Hour'] = df['Date'].dt.hour
+df['Time_of_Day'] = df['Hour'].apply(categorize_time_of_day)
+time_of_day_grouped = df.groupby('Time_of_Day')['Pedestrians'].sum()
+
+plt.figure(figsize=(10, 6))
+time_of_day_grouped.plot(kind='bar', color='skyblue')
+plt.title('Pedestrian Activity Throughout the Day')
+plt.xlabel('Time of Day')
+plt.ylabel('Pedestrian Counts')
+plt.grid(True)
+plt.show()
